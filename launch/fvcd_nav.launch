@@ -1,5 +1,5 @@
 <launch>
   <include file="$(find image_to_map)/launch/image_to_map.launch"/>
-  <node pkg="rostopic" type="rostopic" name="p_space_id" args="pub -r 1 /detector/p_space std_msgs/Int16 '3'"/>
+  <node pkg="rostopic" type="rostopic" name="p_space_id" args="pub -r 5 /detector/p_space std_msgs/Int16 '3'"/>
   <node pkg="fvcd_nav" type="fvcd_nav" name="odometry_publisher" output="screen"/>
 </launch> 
