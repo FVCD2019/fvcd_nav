@@ -5,9 +5,10 @@
   <node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="5.5 0.5 0 0 0 1 1 map odom 10" />
   <!--node pkg="tf" type="static_transform_publisher" name="odom_broadcaster" args="0 0 0 0 0 0 1 odom base_link 10" /-->
 
-  <!--- Run AMCL -->
-  <!--- We load ACML here with diff=true to support our differential drive robot -->
-  <!--include file="$(find amcl)/examples/amcl_diff.launch" /-->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find fvcd_nav)/map/gg_map.yaml" output="screen">
+    <param name="frame_id" value="map"/>
+  </node>
+
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find fvcd_nav)/cfg/carlike/costmap_common_params.yaml" command="load" ns="global_costmap" />
@@ -15,7 +16,7 @@
     <rosparam file="$(find fvcd_nav)/cfg/carlike/local_costmap_params.yaml" command="load" />
     <rosparam file="$(find fvcd_nav)/cfg/carlike/global_costmap_params.yaml" command="load" />
     <rosparam file="$(find fvcd_nav)/cfg/carlike/teb_local_planner_params.yaml" command="load" />
-
+    <!-- rosparam file="$(find fvcd_nav)/cfg/carlike/costmap_converter_params.yaml" command="load" /-->
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
 	<param name="planner_frequency" value="5.0" />
 	<param name="planner_patience" value="5.0" />
