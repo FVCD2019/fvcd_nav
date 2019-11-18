@@ -27,33 +27,33 @@ TebLocalPlannerROS:
  acc_lim_theta: 0.5
 
  # ********************** Carlike robot parameters ********************
- min_turning_radius: 0.5 #1.2        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
- wheelbase: 0.4 #0.8                 # Wheelbase of our robot
+ min_turning_radius: 2.0        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
+ wheelbase: 0.8 #0.8                 # Wheelbase of our robot
  cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
  # ********************************************************************
 
  footprint_model: # types: "point", "circular", "two_circles", "line", "polygon"
    type: "line"
    radius: 0.5 # for type "circular"
-   line_start: [0.0, 0.0] # for type "line"
-   line_end: [0.4, 0.0] # for type "line"
+   line_start: [-0.6, 0.0] # for type "line"
+   line_end: [0.6, 0.0] # for type "line"
    front_offset: 0.5 # for type "two_circles"
    front_radius: 0.5 # for type "two_circles"
    rear_offset: 0.5 # for type "two_circles"
    rear_radius: 0.5 # for type "two_circles"
-   vertices: [ [0.6, 0.35], [0.6, -0.35], [-0.6, -0.35], [-0.6, 0.35], [0.6, 0.35] ] # for type "polygon"
+   vertices: [ [0.6, 0.33], [0.6, -0.33], [-0.6, -0.33], [-0.6, 0.33], [0.6, 0.33] ] # for type "polygon"
 
  # GoalTolerance
     
- xy_goal_tolerance: 0.01
- yaw_goal_tolerance: 0.01
+ xy_goal_tolerance: 0.1
+ yaw_goal_tolerance: 0.1
  free_goal_vel: False
  complete_global_plan: True
     
  # Obstacles
     
- min_obstacle_dist: 0.27 # This value must also include our robot's expansion, since footprint_model is set to "line".
- inflation_dist: 0.6
+ min_obstacle_dist: 0.33 # This value must also include our robot's expansion, since footprint_model is set to "line".
+ inflation_dist: 0.30
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 1.0
  obstacle_poses_affected: 15
@@ -79,7 +79,7 @@ TebLocalPlannerROS:
  weight_acc_lim_theta: 1
  weight_kinematics_nh: 1000
  weight_kinematics_forward_drive: 1
- weight_kinematics_turning_radius: 3 #1
+ weight_kinematics_turning_radius: 1
  weight_optimaltime: 1 # must be > 0
  weight_shortest_path: 0 #0
  weight_obstacle: 100
