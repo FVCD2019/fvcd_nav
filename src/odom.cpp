@@ -21,6 +21,7 @@ private:
 	double x = 0.0;
 	double y = 0.0;
 	double th = 0.0;
+	bool first_chk;
 };
 
 Odom::Odom()
@@ -34,22 +35,32 @@ Odom::Odom()
 	odom.pose.pose.orientation.w = 1;
 	current_time = ros::Time::now();
 	last_time = ros::Time::now();
+	first_chk = false;
 }
 
 
 void Odom::cmdCB(const geometry_msgs::Twist& msg)
 {
+	if (first_chk == false){
+		last_time = current_time;
+		first_chk = true;
+	}
   current_time = ros::Time::now();
   double dt = (current_time - last_time).toSec();
-
+	std::cout << "dt" << dt << std::endl;
+	if (dt > 1){
+		dt = 0;
+	}
     double delta_x = (msg.linear.x * cos(th) - msg.linear.y * sin(th)) * dt;
-    double delta_y = (msg.linear.x * sin(th) + msg.linear.y * cos(th)) * dt;
+    double delta_y = (msg.linear.x * sin(th) + msg.linear.y * cos(th)) * dt;		
     double delta_th = msg.angular.z * dt;
-/*
+    if(msg.linear.x < 0){
+	delta_th = delta_th * -1;
+    }
     x += delta_x;
     y += delta_y;
     th += delta_th;
-*/
+
     std::cout << x << "," << y << "," << th << std::endl;
     //since all odometry is 6DOF we'll need a quaternion created from yaw
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
@@ -67,7 +78,7 @@ void Odom::cmdCB(const geometry_msgs::Twist& msg)
     //publish the message
     odom_pub.publish(odom);
     last_time = current_time;
-
+	
 }
 
 nav_msgs::Odometry Odom::getOdom()
