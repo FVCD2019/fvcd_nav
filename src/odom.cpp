@@ -2,7 +2,12 @@
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
 #include <geometry_msgs/Twist.h>
+#include <std_msgs/Float32MultiArray.h>
 
+float pose_x = 5.5;
+float pose_y = 1.0;
+bool first_chk = false;
+int count = 0;
 
 class Odom
 {
@@ -86,65 +91,36 @@ nav_msgs::Odometry Odom::getOdom()
   return odom;
 }
 
-void Odom::run()
+void poseCB(const std_msgs::Float32MultiArray::ConstPtr& msg)
 {
+  if(count == 5){
+	pose_x = msg->data[0];
+  	pose_y = msg->data[1];
+	first_chk = true;
+  }
+  count++;
+}
+
+int main(int argc, char** argv){
+    ros::init(argc, argv, "odometry_publisher");
+    Odom Odom;
 /*
-  ros::Time current_time, last_time;
-  current_time = ros::Time::now();
-  last_time = ros::Time::now();
-
-  ros::Rate r(1.0);
-  while(n.ok()){
-
-    ros::spinOnce();               // check for incoming messages
-    current_time = ros::Time::now();
-
-    //compute odometry in a typical way given the velocities of the robot
-    double dt = (current_time - last_time).toSec();
-    double delta_x = (vx * cos(th) - vy * sin(th)) * dt;
-    double delta_y = (vx * sin(th) + vy * cos(th)) * dt;
-    double delta_th = vth * dt;
-
-    x += delta_x;
-    y += delta_y;
-    th += delta_th;
-
-    //since all odometry is 6DOF we'll need a quaternion created from yaw
-    geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
-
-    //next, we'll publish the odometry message over ROS
-    nav_msgs::Odometry odom;
-    odom.header.stamp = current_time;
-    odom.header.frame_id = "odom";
-
-    //set the position
-    odom.pose.pose.position.x = x;
-    odom.pose.pose.position.y = y;
-    odom.pose.pose.position.z = 0.0;
-    odom.pose.pose.orientation = odom_quat;
-
-    //set the velocity
-    odom.twist.twist.linear.x = vx;
-    odom.twist.twist.linear.y = vy;
-    odom.twist.twist.angular.z = vth;
-
-    //publish the message
-    odom_pub.publish(odom);
-
-    last_time = current_time;
-    r.sleep();
+  if(!first_chk){
+  	ros::Subscriber sub = n.subscribe("/detector/pose", 1, poseCB);
   }
 */
+    tf::TransformBroadcaster br;
+    tf::Transform transform;
+    tf::TransformBroadcaster odom_broadcaster;
 
-}
-int main(int argc, char** argv){
-	ros::init(argc, argv, "odometry_publisher");
-	Odom Odom;
-	tf::TransformBroadcaster odom_broadcaster;
-
-	ros::Rate rate(100);
-	while(ros::ok()){
-		nav_msgs::Odometry current_odom = Odom.getOdom();
+    ros::Rate rate(10);
+    while(ros::ok()){
+///
+    transform.setOrigin( tf::Vector3(pose_x, pose_y, 0.0) );
+    transform.setRotation( tf::Quaternion(0, 0, 1, 1) );
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "map", "odom"));
+///
+    nav_msgs::Odometry current_odom = Odom.getOdom();
 
     geometry_msgs::TransformStamped odom_trans;
     odom_trans.header.stamp = ros::Time::now();
@@ -161,6 +137,4 @@ int main(int argc, char** argv){
 		rate.sleep();
 	}
 	return 0;
-
-
 }

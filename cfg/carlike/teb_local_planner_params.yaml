@@ -19,7 +19,7 @@ TebLocalPlannerROS:
     
  # Robot
          
- max_vel_x: 0.4
+ max_vel_x: 0.5
  max_vel_x_backwards: 0.2
  max_vel_y: 0.0
  max_vel_theta: 0.3 # the angular velocity is also bounded by min_turning_radius in case of a carlike robot (r = v / omega)
@@ -27,8 +27,8 @@ TebLocalPlannerROS:
  acc_lim_theta: 0.5
 
  # ********************** Carlike robot parameters ********************
- min_turning_radius: 2.0        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
- wheelbase: 0.8 #0.8                 # Wheelbase of our robot
+ min_turning_radius: 1.8        # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
+ wheelbase: 0.63 #0.8                 # Wheelbase of our robot
  cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
  # ********************************************************************
 
