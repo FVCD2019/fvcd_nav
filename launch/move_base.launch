@@ -26,4 +26,6 @@
   <!--  **************** Visualisation ****************  -->
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find teb_local_planner_tutorials)/cfg/rviz_navigation.rviz"/>
 
+  <include file="$(find nav_goal)/launch/goal.launch"/>
+
 </launch>
