@@ -1,6 +1,5 @@
 <launch>
   <master auto="start"/>
-
   <!--node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="5.5 1.0 0 0 0 1 1 map odom 10" /-->
   <node name="map_server" pkg="map_server" type="map_server" args="$(find fvcd_nav)/map/gg_map.yaml" output="screen">
     <param name="frame_id" value="map"/>

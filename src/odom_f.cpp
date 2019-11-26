@@ -4,8 +4,8 @@
 #include <geometry_msgs/Twist.h>
 #include <std_msgs/Float32MultiArray.h>
 
-float init_pose_x = 5.5;
-float init_pose_y = 1.0;
+float init_pose_x = 1.0;
+float init_pose_y = 0.0;
 bool first_chk = false;
 int count = 0;
 
@@ -50,17 +50,23 @@ nav_msgs::Odometry Odom::getOdom()
 void Odom::poseCB(const std_msgs::Float32MultiArray::ConstPtr& msg)
 {
   	if(count < 5){
+	std::cout<< count <<std::endl;
 		count++;
 	}
 	else if(count == 5){
-		init_pose_x = msg->data[0];
-  		init_pose_y = msg->data[1];
+		init_pose_x = msg->data[0]*0.005;
+  		init_pose_y = msg->data[1]*0.005;
 		first_chk = true;
+		std::cout<< "pose init" <<std::endl;
+		count++;
   	}
 	else{
-		pose_x = msg->data[0];
-  		pose_y = msg->data[1];
-		pose_heading = msg->data[2];
+		pose_x = msg->data[0]*0.005;
+  		pose_y = msg->data[1]*0.005;
+		pose_x = pose_x - init_pose_x;
+  		pose_y = pose_y - init_pose_y;
+		//pose_heading = msg->data[2];
+		pose_heading = 0;
 		geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(pose_heading);
 
 		//next, we'll publish the odometry message over ROS
@@ -75,6 +81,7 @@ void Odom::poseCB(const std_msgs::Float32MultiArray::ConstPtr& msg)
 
 		//publish the message
 		odom_pub.publish(odom);
+		std::cout << "[odom]" << odom.pose.pose.position.x << " : " << odom.pose.pose.position.y << std::endl;
 		last_time = current_time;
 	}
 }
@@ -91,6 +98,7 @@ int main(int argc, char** argv){
     while(ros::ok()){
 		// map to odom tf
 		transform.setOrigin( tf::Vector3(init_pose_x, init_pose_y, 0.0) );
+		std::cout << "[INIT]" << init_pose_x << " : " << init_pose_y << std::endl;
 		transform.setRotation( tf::Quaternion(0, 0, 1, 1) );
 		br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "map", "odom"));
 
@@ -106,7 +114,15 @@ int main(int argc, char** argv){
 		odom_trans.transform.translation.z = 0.0;
 		odom_trans.transform.rotation = current_odom.pose.pose.orientation;
 
-    	odom_broadcaster.sendTransform(odom_trans);
+
+		//geometry_msgs::Quaternion odom_quat_2 = tf::createQuaternionMsgFromYaw(0);
+		//odom_trans.transform.translation.x = 0.0;
+		//odom_trans.transform.translation.y = 0.0;
+		//odom_trans.transform.translation.z = 0.0;
+		//odom_trans.transform.rotation = odom_quat_2;
+
+    		odom_broadcaster.sendTransform(odom_trans);
+
 		ros::spinOnce();
 		rate.sleep();
 	}
