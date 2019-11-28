@@ -1,9 +1,9 @@
 <launch>
   <master auto="start"/>
-  <!--node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="5.5 1.0 0 0 0 1 1 map odom 10" /-->
-  <node name="map_server" pkg="map_server" type="map_server" args="$(find fvcd_nav)/map/gg_map.yaml" output="screen">
-    <param name="frame_id" value="map"/>
-  </node>
+  <node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="5.5 1.0 0 0 0 1 1 map odom 10" />
+  <!--node name="map_server" pkg="map_server" type="map_server" args="$(find fvcd_nav)/map/gg_map.yaml" output="screen"-->
+    <!--param name="frame_id" value="map"/-->
+  <!--/node-->
 
 
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -14,11 +14,11 @@
     <rosparam file="$(find fvcd_nav)/cfg/carlike/teb_local_planner_params.yaml" command="load" />
     <!-- rosparam file="$(find fvcd_nav)/cfg/carlike/costmap_converter_params.yaml" command="load" /-->
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
-	<param name="planner_frequency" value="5.0" />
+	<param name="planner_frequency" value="10.0" />
 	<param name="planner_patience" value="5.0" />
 
 	<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-	<param name="controller_frequency" value="3.0" />
+	<param name="controller_frequency" value="15.0" />
 	<param name="controller_patience" value="5.0" />
   </node>
 
