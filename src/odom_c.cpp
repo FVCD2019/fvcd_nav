@@ -62,8 +62,8 @@ void Odom::poseCB(const std_msgs::Float32MultiArray::ConstPtr& msg)
     y = msg->data[1]*0.005 - init_pose_y;
     th = 360-msg->data[2];
     th = th*PI/180;
-    std::cout << init_pose_x << "," << init_pose_y << "," << th << std::endl;
-    std::cout << msg->data[0]*0.005 << "," << msg->data[1]*0.005 << std::endl;
+    //std::cout << init_pose_x << "," << init_pose_y << "," << th << std::endl;
+    //std::cout << msg->data[0]*0.005 << "," << msg->data[1]*0.005 << std::endl;
 
     //since all odometry is 6DOF we'll need a quaternion created from yaw
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);

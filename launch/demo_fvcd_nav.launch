@@ -1,6 +1,10 @@
 <launch>
-  <master auto="start"/>
-  <!--node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="5.5 1.0 0 0 0 1 1 map odom 10" /-->
+  <include file="$(find image_to_map)/launch/image_to_map.launch"/>
+  <!--node pkg="rostopic" type="rostopic" name="p_space_id" args="pub -r 5 /p_space_id std_msgs/Int16 '3'"/-->
+  <node pkg="fvcd_nav" type="fvcd_nav" name="odometry_publisher" output="screen"/>
+
+<master auto="start"/>
+  <node pkg="tf" type="static_transform_publisher" name="map_broadcaster" args="5.5 1.0 0 0 0 1 1 map odom 10" />
   <!--node name="map_server" pkg="map_server" type="map_server" args="$(find fvcd_nav)/map/gg_map.yaml" output="screen"-->
     <!--param name="frame_id" value="map"/-->
   <!--/node-->
@@ -14,7 +18,7 @@
     <rosparam file="$(find fvcd_nav)/cfg/carlike/teb_local_planner_params.yaml" command="load" />
     <!-- rosparam file="$(find fvcd_nav)/cfg/carlike/costmap_converter_params.yaml" command="load" /-->
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
-	<param name="planner_frequency" value="20.0" />
+	<param name="planner_frequency" value="10.0" />
 	<param name="planner_patience" value="5.0" />
 
 	<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
@@ -26,5 +30,4 @@
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find teb_local_planner_tutorials)/cfg/rviz_navigation.rviz"/>
 
   <include file="$(find nav_goal)/launch/goal.launch"/>
-
 </launch>
