@@ -26,7 +26,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME} src/odom_b.cpp)
+add_executable(${PROJECT_NAME} src/odom_c.cpp)
 
 target_link_libraries(${PROJECT_NAME}
   ${catkin_LIBRARIES}

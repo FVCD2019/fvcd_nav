@@ -11,7 +11,7 @@ TebLocalPlannerROS:
  global_plan_overwrite_orientation: True
  allow_init_with_backwards_motion: True
  max_global_plan_lookahead_dist: 3.0 #3.0
- global_plan_viapoint_sep: 0.3 #-1  #######fix
+ global_plan_viapoint_sep: -1 #0.3 #-1  #######fix
  global_plan_prune_distance: 1
  exact_arc_length: False
  feasibility_check_no_poses: 2
@@ -19,15 +19,15 @@ TebLocalPlannerROS:
     
  # Robot
          
- max_vel_x: 0.5
- max_vel_x_backwards: 0.5
+ max_vel_x: 0.40
+ max_vel_x_backwards: 0.38
  max_vel_y: 0.0
  max_vel_theta: 0.4 # the angular velocity is also bounded by min_turning_radius in case of a carlike robot (r = v / omega)
- acc_lim_x: 0.2
+ acc_lim_x: 0.15
  acc_lim_theta: 0.2 
 
  # ********************** Carlike robot parameters ********************
- min_turning_radius: 1.8       # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
+ min_turning_radius: 2.0       # Min turning radius of the carlike robot (compute value using a model or adjust with rqt_reconfigure manually)
  wheelbase: 0.63 #0.8                 # Wheelbase of our robot
  cmd_angle_instead_rotvel: True # stage simulator takes the angle instead of the rotvel as input (twist message)
  # ********************************************************************
@@ -56,7 +56,7 @@ TebLocalPlannerROS:
  inflation_dist: 0.30
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 3.0
- obstacle_poses_affected: 15
+ obstacle_poses_affected: 3
 
  dynamic_obstacle_inflation_dist: 0.6
  include_dynamic_obstacles: True 
@@ -86,7 +86,7 @@ TebLocalPlannerROS:
  weight_inflation: 1 #0.2
  weight_dynamic_obstacle: 10 # not in use yet
  weight_dynamic_obstacle_inflation: 0.2
- weight_viapoint: 10
+ weight_viapoint: 20 #10
  weight_adapt_factor: 2
 
  # Homotopy Class Planner

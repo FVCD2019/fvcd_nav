@@ -11,7 +11,7 @@ TebLocalPlannerROS:
  global_plan_overwrite_orientation: True
  allow_init_with_backwards_motion: True
  max_global_plan_lookahead_dist: 3.0 #3.0
- global_plan_viapoint_sep: 0.4 #-1
+ global_plan_viapoint_sep: 0.35 #-1
  global_plan_prune_distance: 1
  exact_arc_length: False
  feasibility_check_no_poses: 2
@@ -52,7 +52,7 @@ TebLocalPlannerROS:
     
  # Obstacles
     
- min_obstacle_dist: 0.45 #0.35 # This value must also include our robot's expansion, since footprint_model is set to "line".
+ min_obstacle_dist: 0.4 #0.35 # This value must also include our robot's expansion, since footprint_model is set to "line".
  inflation_dist: 0.30
  include_costmap_obstacles: True
  costmap_obstacles_behind_robot_dist: 3.0 #5.0
@@ -86,7 +86,7 @@ TebLocalPlannerROS:
  weight_inflation: 1 #0.2
  weight_dynamic_obstacle: 10 # not in use yet
  weight_dynamic_obstacle_inflation: 0.2
- weight_viapoint: 10
+ weight_viapoint: 20 #10
  weight_adapt_factor: 2
 
  # Homotopy Class Planner
@@ -94,7 +94,7 @@ TebLocalPlannerROS:
  enable_homotopy_class_planning: True
  enable_multithreading: True
  max_number_classes: 4
- selection_cost_hysteresis: 1.3 #1.0
+ selection_cost_hysteresis: 1.2 #1.0
  selection_prefer_initial_plan: 0.95
  selection_obst_cost_scale: 1.0
  selection_alternative_time_cost: False
@@ -119,5 +119,5 @@ TebLocalPlannerROS:
  oscillation_recovery: True
  oscillation_v_eps: 0.1
  oscillation_omega_eps: 0.1
- oscillation_recovery_min_duration: 10
+ oscillation_recovery_min_duration: 5 #10
  oscillation_filter_duration: 10
