@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find image_to_map)/launch/image_to_map.launch"/>
+  <node pkg="rostopic" type="rostopic" name="p_space_id" args="pub -r 5 /p_space_id std_msgs/Int16 '3'"/>
+  <node pkg="rostopic" type="rostopic" name="p_space" args="pub -r 5 /detector/p_space std_msgs/Int16MultiArray '{layout: {dim: [{label: '', size: 0, stride: 0}], data_offset: 0}, data: [3, 743, 155]}'"/>
+  <node pkg="fvcd_nav" type="fvcd_nav" name="odometry_publisher" output="screen"/>
+</launch>
