@@ -102,7 +102,7 @@ int main(int argc, char** argv){
     tf::Transform transform;
     tf::TransformBroadcaster odom_broadcaster;
 
-    ros::Rate rate(10);
+    ros::Rate rate(20);
     while(ros::ok()){
 ///
     transform.setOrigin( tf::Vector3(init_pose_x, init_pose_y, 0.0) );
